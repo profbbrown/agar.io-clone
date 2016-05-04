@@ -83,7 +83,7 @@ describe('util.js', function () {
       expect(identity).to.eql(1);
 
       // perform a trivial log calculation: 3^2 === 9
-      expect(logNineThree).to.eql(2);
+      expect(logNineThree).to.be.within(1.9999, 2.00001);
     });
 
   });
