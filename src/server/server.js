@@ -238,6 +238,8 @@ io.on('connection', function (socket) {
         id: socket.id,
         x: position.x,
         y: position.y,
+        w: c.defaultPlayerMass,
+        h: c.defaultPlayerMass,
         cells: cells,
         massTotal: massTotal,
         hue: Math.round(Math.random() * 360),
@@ -298,8 +300,8 @@ io.on('connection', function (socket) {
 
     });
 
-    socket.on('ping', function () {
-        socket.emit('pong');
+    socket.on('pingcheck', function () {
+        socket.emit('pongcheck');
     });
 
     socket.on('windowResized', function (data) {
