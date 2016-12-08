@@ -438,7 +438,7 @@ io.on('connection', function (socket) {
 
         if(currentPlayer.cells.length < c.limitSplit && currentPlayer.massTotal >= c.defaultPlayerMass*2) {
             //Split single cell from virus
-            if(virusCell) {
+            if(virusCell && virusCell < currentPlayer.cells.length) {
               splitCell(currentPlayer.cells[virusCell]);
             }
             else {
@@ -575,12 +575,32 @@ function tickPlayer(currentPlayer) {
         var playerCollisions = [];
 
         var otherUsers =  tree.get(currentPlayer, check);
+        //console.log('playerCollisions length = ' + playerCollisions.length);
 
         playerCollisions.forEach(collisionCheck);
     }
 }
 
 function moveloop() {
+    // Update width and height of each player                       
+    for (var u = 0; u < users.length; u++) {                                    
+                                                                    
+        // Find min and max x of all the cells  
+        // Find min and max y of all the cells                                  
+        var minx = 99999999, maxx = -99999999;                                  
+        var miny = 9999999, maxy = -9999999;  
+        for (var c = 0; c < users[u].cells.length; c++) {
+            if (users[u].cells[c].x < minx) { minx = users[u].cells[c].x; }
+            if (users[u].cells[c].x > maxx) { maxx = users[u].cells[c].x; }
+            if (users[u].cells[c].y < miny) { miny = users[u].cells[c].y; }
+            if (users[u].cells[c].y > maxy) { maxy = users[u].cells[c].y; }
+        }                                                                  
+                                                                           
+        // Use the difference to calculate the width and height of the user
+        users[u].w = Math.abs(maxx - minx);                                
+        users[u].h = Math.abs(maxy - miny);                                
+    }
+    
     for (var i = 0; i < users.length; i++) {
         tickPlayer(users[i]);
     }
